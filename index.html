@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17131f">
+<title>Ame-chan — P-chan's companion</title>
+<style>
+ :root{color-scheme:dark;--bg:#17131f;--panel:#211a2b;--panel2:#2b2137;--pink:#ff7eb6;--pink2:#ffb1d1;--text:#f7edf5;--muted:#b9aabb;--line:#44334d}
+*{box-sizing:border-box}html{height:100%;background:var(--bg)}body{margin:0;height:100%;min-height:0;background:radial-gradient(ellipse at 50% 0%,#38213e 0,#211827 42%,var(--bg) 78%);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);display:flex;justify-content:center;overflow:hidden;padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+.app{width:min(100%,1080px);height:100%;min-height:0;display:flex;flex-direction:column;gap:10px}.top{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:2px 3px}.brand{font-weight:850;letter-spacing:.04em;font-size:19px}.brand span{color:var(--pink)}.status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;background:#91e8a4;border-radius:50%;box-shadow:0 0 10px #91e8a488}
+.workspace{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:12px;align-items:stretch}.stage{position:relative;min-width:0;min-height:0;height:100%;border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,#32223cdd,#1c1725f5);overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px #0003}.stage:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:#ff7eb612;filter:blur(20px);top:15%;left:calc(50% - 120px)}.stage:after{content:"✦      ·     ✧      ·     ✦";position:absolute;top:22px;right:20px;color:#ffc0dc66;font-size:14px;letter-spacing:8px;pointer-events:none}
+#ame{position:relative;z-index:1;max-width:94%;max-height:84%;width:auto;height:auto;object-fit:contain;image-rendering:auto;cursor:pointer;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 12px 20px #0004);transition:transform .15s}#ame:active{transform:scale(.985)}.tap-hint{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:12px;color:#d4bed5a6;pointer-events:none}.label{position:absolute;top:13px;left:15px;background:#120e1caa;border:1px solid #ffffff14;border-radius:99px;padding:6px 10px;font-size:11px;color:var(--pink2);z-index:2}
+.chat-column{display:flex;flex-direction:column;gap:9px;min-width:0;min-height:0}.panel{flex:1;min-height:0;min-width:0;border:1px solid var(--line);border-radius:20px;background:#211a2beF;padding:13px;display:flex;flex-direction:column;gap:10px;overflow:hidden}.chat-head{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;color:var(--muted)}.chat-head strong{color:var(--text);font-size:14px}.messages{flex:1;min-height:0;display:flex;flex-direction:column;gap:9px;overflow:auto;padding:2px 2px;overscroll-behavior:contain;scrollbar-width:thin}.msg{max-width:92%;padding:10px 12px;border-radius:14px;font-size:14px;line-height:1.4;overflow-wrap:anywhere;white-space:pre-wrap}.msg.ame{align-self:flex-start;background:#30243b;border:1px solid #49344f;border-bottom-left-radius:4px}.msg.you{align-self:flex-end;background:#6d3156;border:1px solid #a44d7d;border-bottom-right-radius:4px}.compose{flex:0 0 auto;display:flex;gap:8px;min-width:0}.compose input{min-width:0;width:0;flex:1;border:1px solid #4c3b56;background:#17131f;color:var(--text);border-radius:13px;padding:12px 13px;font-size:15px;outline:none}.compose input:focus{border-color:var(--pink)}button{border:0;cursor:pointer;font:inherit;color:var(--text);border-radius:13px;padding:11px 14px;background:#a94076;font-weight:750;flex:0 0 auto}button:active{transform:scale(.98)}button:disabled{opacity:.6}.tools{flex:0 0 auto;display:flex;gap:7px;flex-wrap:wrap}.tools button{background:#30243b;border:1px solid #49344f;font-size:12px;padding:8px 10px}.tools button.primary{background:#a94076;border-color:#a94076}
+.api-settings{flex:0 0 auto;border:1px solid var(--line);border-radius:14px;background:#211a2beF;padding:9px 11px;display:flex;flex-direction:column;gap:7px;max-height:30vh;overflow:auto}.api-settings summary{cursor:pointer;font-size:12px;font-weight:750;color:var(--pink2)}.api-settings p{font-size:11px;line-height:1.45;color:var(--muted);margin:0}.api-settings input,.api-settings select{width:100%;border:1px solid #4c3b56;background:#17131f;color:var(--text);border-radius:10px;padding:10px;font:inherit}.api-row{display:flex;gap:8px}.api-row button{font-size:12px;padding:9px 11px}.foot{flex:0 0 auto;font-size:10px;line-height:1.3;color:#a895ac;text-align:center;padding:0 8px}
+@media(max-width:600px){body{padding:8px 7px calc(7px + env(safe-area-inset-bottom))}.app{gap:7px}.top{padding:1px 2px}.brand{font-size:16px}.status{font-size:10px;gap:5px}.workspace{grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);gap:7px}.stage{border-radius:16px}.stage:after{top:12px;right:8px;font-size:10px;letter-spacing:3px}.stage:before{width:130px;height:130px;left:calc(50% - 65px)}#ame{max-width:98%;max-height:76%}.label{top:8px;left:7px;padding:4px 6px;font-size:9px;max-width:calc(100% - 14px)}.tap-hint{bottom:7px;font-size:9px;padding:0 4px}.chat-column{gap:6px}.panel{padding:8px 7px;gap:7px;border-radius:16px}.chat-head{font-size:10px;align-items:flex-start;flex-direction:column;gap:2px}.chat-head strong{font-size:12px}.messages{gap:7px;padding:1px}.msg{max-width:98%;padding:8px 9px;font-size:12px;line-height:1.35}.compose{gap:5px}.compose input{font-size:12px;padding:10px 7px;border-radius:10px}.compose button{font-size:12px;padding:9px 8px;border-radius:10px}.tools{gap:5px}.tools button{font-size:10px;padding:7px 6px;border-radius:9px}.api-settings{padding:7px 8px;border-radius:12px}.api-settings summary{font-size:10px}.foot{font-size:9px}}
+@media(max-width:350px){.workspace{grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr);gap:5px}.tools button{font-size:9px;padding:6px 5px}.chat-head{font-size:9px}}
+
+/* Desktop-window layout inspired by the in-game desktop UI */
+:root{color-scheme:dark;--bg:#17172a;--panel:#22233a;--panel2:#2b2d4b;--pink:#ff8fc9;--pink2:#ffd0e8;--text:#f7f5ff;--muted:#b6b8d8;--line:#686b9a}
+html,body{background:#17172a}
+body{padding:12px;background:radial-gradient(ellipse at 20% 0%,#39365f 0,#22223e 44%,#151526 100%);}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.2;background-image:linear-gradient(#b7b9ff14 1px,transparent 1px),linear-gradient(90deg,#b7b9ff14 1px,transparent 1px);background-size:24px 24px}
+.app{position:relative;z-index:1;width:min(100%,1180px);gap:9px}
+.top{padding:0 2px 3px}.brand{font-size:18px;text-shadow:0 2px #0006}.status{background:#17172ad9;border:1px solid #686b9a;border-radius:3px;padding:5px 8px}
+.workspace{grid-template-columns:minmax(230px,.72fr) minmax(0,1.28fr);gap:12px;align-items:start}
+.desktop-window{min-width:0;min-height:0;background:#292a48;border:1px solid #9b9dcc;border-radius:4px;box-shadow:4px 5px 0 #08081580,0 12px 35px #0005;overflow:hidden;display:flex;flex-direction:column}
+.window-title{height:31px;flex:0 0 31px;display:flex;align-items:center;gap:8px;padding:0 7px;color:#fff;font-size:12px;font-weight:800;letter-spacing:.01em;background:linear-gradient(90deg,#515baf,#8b62bb 68%,#bd78bd);border-bottom:1px solid #c5c6f0;text-shadow:0 1px #252344}
+.window-icon{display:inline-grid;place-items:center;width:17px;height:17px;background:#e8e8ff;color:#6a4f9a;border:1px solid #fff;border-radius:2px;text-shadow:none;font-size:12px}
+.window-controls{margin-left:auto;display:flex;gap:3px}.window-controls i{font-style:normal;display:grid;place-items:center;width:19px;height:18px;background:#d8d9f2;color:#292844;border:1px solid #fff;border-right-color:#7779a8;border-bottom-color:#7779a8;font-size:13px;line-height:1}
+.avatar-window{align-self:start;position:sticky;top:8px}.stage{height:clamp(260px,55vh,500px);border:0;border-radius:0;background:linear-gradient(145deg,#29213c,#14182e);box-shadow:none}
+.stage:before{background:#ff7eb61c}.stage:after{top:12px;right:12px}.label{border-radius:3px;background:#17172ae8;border-color:#666b9b}.tap-hint{bottom:10px}
+.chat-window{height:100%;min-height:440px}.chat-column{height:100%;gap:0;background:#20213a}.panel{border:0;border-radius:0;background:#20213a;padding:12px;gap:10px}.chat-head{border-bottom:1px solid #45486f;padding:0 0 8px}.chat-head strong{font-size:14px}.messages{padding:8px 4px;gap:9px}
+.msg{border-radius:3px;max-width:88%;padding:9px 11px;font-size:13px;box-shadow:0 2px 0 #0002}.msg.ame{align-self:flex-start;background:#263e70;border:1px solid #577bb7;border-bottom-left-radius:0;color:#f1f5ff}.msg.you{align-self:flex-end;background:#245c48;border:1px solid #4d9a79;border-bottom-right-radius:0;color:#f0fff7}
+.compose input{border-radius:3px;background:#17182c;border-color:#62658f}.compose input:focus{border-color:#9da7ff}button{border-radius:3px;background:#6c68b7;border:1px solid #aaa8ef;box-shadow:inset 1px 1px #ffffff35;font-size:13px}.tools button{border-radius:3px;background:#343454;border-color:#676995}.tools button.primary{background:#6966b1;border-color:#a4a1ec}
+.api-settings{border-radius:0;border:0;border-top:1px solid #4a4d75;background:#1b1c31;padding:10px 12px;max-height:25vh}.api-settings input,.api-settings select{border-radius:3px}.foot{padding:3px 0;color:#9fa1c9}
+@media(max-width:650px){body{padding:7px}.app{gap:7px}.workspace{grid-template-columns:minmax(112px,.72fr) minmax(0,1.28fr);gap:7px}.window-title{height:27px;flex-basis:27px;padding:0 5px;font-size:10px;gap:5px}.window-controls i{width:15px;height:15px;font-size:11px}.window-icon{width:14px;height:14px;font-size:10px}.stage{height:clamp(220px,43vh,390px)}#ame{max-width:98%;max-height:76%}.chat-window{min-height:390px}.panel{padding:7px 6px;gap:7px}.chat-head{font-size:10px}.chat-head strong{font-size:11px}.msg{max-width:98%;font-size:11px;padding:7px}.compose{gap:4px}.compose input{font-size:11px;padding:9px 6px}.compose button{font-size:11px;padding:8px 6px}.tools{gap:4px}.tools button{font-size:9px;padding:6px 4px}.api-settings{padding:7px}.api-settings summary{font-size:10px}.foot{font-size:8px}}
+@media(max-width:380px){.workspace{grid-template-columns:minmax(98px,.65fr) minmax(0,1.35fr);gap:5px}.window-title{font-size:9px}.window-controls{gap:2px}.window-controls i{width:13px}.stage{height:240px}.msg{font-size:10px}.chat-window{min-height:390px}}
+
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top"><div class="brand">AME <span>///</span> СКРЕПЫШ</div><div class="status"><i class="dot"></i> Cloudflare Worker</div></header>
+  <div class="workspace">
+    <section class="desktop-window avatar-window" aria-label="Ame-chan webcam window">
+      <div class="window-title"><span class="window-icon">♥</span><span>Ame-chan.exe — webcam</span><span class="window-controls"><i>−</i><i>□</i><i>×</i></span></div>
+      <section class="stage" aria-label="Ame-chan avatar">
+      <div class="label" id="moodLabel">mood: calm</div>
+      <img id="ame" src="./sprites/IMG_1696.gif" alt="Ame-chan — tap to pet" draggable="false">
+      <div class="tap-hint">tap Ame-chan to pet her ♡</div>
+      </section>
+    </section>
+    <div class="desktop-window chat-window">
+      <div class="window-title"><span class="window-icon">▣</span><span>Chat — Ame</span><span class="window-controls"><i>−</i><i>□</i><i>×</i></span></div>
+      <div class="chat-column">
+      <section class="panel" aria-label="Chat with Ame-chan">
+        <div class="chat-head"><strong>Direct messages</strong><span id="registerLabel">Ame-chan · everyday</span></div>
+        <div class="messages" id="messages" aria-live="polite"></div>
+        <form class="compose" id="chatForm"><input id="chatInput" autocomplete="off" maxlength="500" placeholder="Message Ame-chan…" aria-label="Message"><button type="submit">Send</button></form>
+        <div class="tools"><button type="button" id="petBtn" class="primary">♡ Pet</button><button type="button" id="complimentBtn">Compliment</button><button type="button" id="surpriseBtn">Surprise</button><button type="button" id="idleBtn">Change activity</button></div>
+      </section>
+      <details class="api-settings" id="apiSettings">
+        <summary>Neural network status</summary>
+        <p>Requests are routed through a Cloudflare Worker. The Groq key stays in Cloudflare secrets and is never sent to the browser.</p>
+        <p id="apiStatus" role="status">Ready to check the connection when you send a message.</p>
+      </details>
+      </div>
+    </div>
+  </div>
+  <div class="foot">NEEDY STREAMER OVERLOAD inspired desktop · P-chan: green · Ame: blue</div>
+</main>
+<script src="./animation-map.js"></script>
+<script src="./personality.js"></script>
+<script src="./presence.js"></script>
+<script>
+(() => {
+  'use strict';
+  const STORAGE_KEY = 'ameChanCompanion_v1';
+  const img = document.getElementById('ame');
+  const messages = document.getElementById('messages');
+  const form = document.getElementById('chatForm');
+  const input = document.getElementById('chatInput');
+  const moodLabel = document.getElementById('moodLabel');
+  const apiStatus = document.getElementById('apiStatus');
+  const sendButton = form.querySelector('button');
+  let previousFile = 'IMG_1696.gif';
+  let idleTimer = null;
+  let lastAction = Date.now();
+  let presence = null;
+  let history = [];
+  let transcript = [];
+  let state = { mood: 'calm', scene: 'idle', affection: 0, irritation: 0, lastActiveAt: Date.now() };
+
+  function loadSaved() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const saved = JSON.parse(raw);
+      if (!saved || typeof saved !== 'object') return false;
+      history = Array.isArray(saved.history) ? saved.history.filter(m => m && ['user','assistant'].includes(m.role) && typeof m.content === 'string').slice(-24) : [];
+      transcript = Array.isArray(saved.transcript) ? saved.transcript.filter(m => m && typeof m.text === 'string' && ['you','ame'].includes(m.who)).slice(-80) : [];
+      state = { ...state, ...(saved.state || {}) };
+      return transcript.length > 0 || history.length > 0;
+    } catch (e) { console.warn('Could not restore Ame-chan save:', e); return false; }
+  }
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, history: history.slice(-24), transcript: transcript.slice(-80), state }));
+    } catch (e) { apiStatus.textContent = 'Browser storage is unavailable; this visit may not be saved.'; }
+  }
+  function renderMessage(text, who) {
+    const el = document.createElement('div');
+    el.className = 'msg ' + who;
+    el.textContent = text;
+    messages.appendChild(el);
+    while (messages.children.length > 28) messages.removeChild(messages.firstChild);
+    messages.scrollTop = messages.scrollHeight;
+  }
+  function addMessage(text, who) {
+    renderMessage(text, who);
+    transcript.push({ text, who });
+    if (transcript.length > 80) transcript = transcript.slice(-80);
+    save();
+  }
+  function paintMood(scene, label) {
+    if (scene) {
+      previousFile = showAmeAnimation(scene, previousFile);
+      state.scene = scene;
+    }
+    if (label) {
+      state.mood = label;
+      moodLabel.textContent = 'mood: ' + label;
+    }
+    save();
+  }
+  function animate(scene, label) {
+    paintMood(scene, label);
+    lastAction = Date.now();
+    scheduleIdle();
+  }
+  function markActivity() {
+    state.lastActiveAt = Date.now();
+    lastAction = Date.now();
+    save();
+    if (presence) presence.userActivity();
+    scheduleIdle();
+  }
+  function scheduleIdle() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (Date.now() - lastAction >= 26000) {
+        if (state.irritation >= 3) animate('irritated', 'annoyed');
+        else animate('long_idle', 'daydreaming');
+      } else animate('idle', state.mood || 'calm');
+    }, 26000);
+  }
+  function classifyReaction(userText, reply) {
+    const u = (userText || '').toLowerCase();
+    const a = (reply || '').toLowerCase();
+    const insult = /(shut up|stupid|idiot|dumb|hate you|annoying|go away|fuck off|useless|заткнись|тупая|дура|ненавижу|отстань|иди нах|бесишь|достала|достал)/i.test(u);
+    const affection = /(love you|i adore you|hug|pet you|pat your head|cute|pretty|beautiful|милая|красивая|люблю тебя|обним|поглад|хорошая девочка)/i.test(u);
+    const sadness = /(sad|lonely|hurt|crying|upset|miss you|left me|you don't care|грустно|одинок|больно|плачу|скучаю|обидно)/i.test(a);
+    const anger = /(fuck off|leave me alone|don't talk to me|i'm done with you|shut up|whatever, p-chan|иди нах|отвали|отстань)/i.test(a);
+    const surprise = /(surprise|seriously\?|what\?!|wait, what|no way|ого|невероятно|сюрприз)/i.test(u);
+    const praise = /(good job|proud of you|you're amazing|you're the best|умница|горжусь|ты лучшая)/i.test(u);
+    if (insult || anger) { state.irritation = Math.min(5, state.irritation + 1); return ['irritated', 'offended']; }
+    if (affection || praise) { state.affection = Math.min(10, state.affection + 1); state.irritation = Math.max(0, state.irritation - 1); return ['compliment', 'pleased']; }
+    if (sadness) return ['sad_talk', 'hurt'];
+    if (surprise) return ['surprise', 'surprised'];
+    if (/(haha|lol|lmao|xD|:3|<3)/i.test(a)) return ['compliment', 'playful'];
+    state.irritation = Math.max(0, state.irritation - 1);
+    return ['ordinary_question', 'interested'];
+  }
+  async function askGroq(raw) {
+    apiStatus.textContent = 'Ame-chan is typing…';
+    const body = { messages: [...history.slice(-24), { role: 'user', content: raw }] };
+    try {
+      const response = await fetch('https://ame-chan-api.aleksa-akulova1981.workers.dev/chat', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data?.error || data?.message || ('HTTP ' + response.status));
+      const reply = (data?.reply || data?.content || data?.choices?.[0]?.message?.content || '').trim();
+      if (!reply) throw new Error('The Worker returned an empty response.');
+      history.push({ role: 'user', content: raw }, { role: 'assistant', content: reply });
+      history = history.slice(-24);
+      apiStatus.textContent = 'Connected through Cloudflare Worker';
+      save();
+      return reply;
+    } catch (err) {
+      apiStatus.textContent = 'Connection error: ' + String(err.message || err).slice(0, 160);
+      throw err;
+    }
+  }
+  function pet() {
+    markActivity();
+    state.affection = Math.min(10, state.affection + 1);
+    state.irritation = Math.max(0, state.irritation - 1);
+    animate('pet', 'pleased');
+    if (window.AME_PERSONALITY) window.AME_PERSONALITY.setExternalRegister('playful');
+    addMessage(pickLine(['hmph… okay, that was nice. don’t get used to it. ♡', 'hehe. a little more, if you insist :3', '*closes her eyes, looking pleased* there. much better.', 'you’re lucky i like you, P-chan.']), 'ame');
+    save();
+  }
+  function pickLine(lines) { return lines[Math.floor(Math.random() * lines.length)]; }
+
+  // Restore the conversation and emotional state before starting the presence timer.
+  const hadSave = loadSaved();
+  if (hadSave) {
+    transcript.slice(-28).forEach(m => renderMessage(m.text, m.who));
+    moodLabel.textContent = 'mood: ' + (state.mood || 'calm');
+    previousFile = showAmeAnimation(state.scene || 'idle', previousFile);
+    apiStatus.textContent = 'Previous chat and mood restored on this device.';
+  } else {
+    addMessage('oh, you’re here. finally. what’s up, P-chan? :3', 'ame');
+    save();
+  }
+  const elapsed = Date.now() - (Number(state.lastActiveAt) || Date.now());
+  if (hadSave && elapsed > 180000) {
+    if (elapsed > 3600000) {
+      animate('sad_talk', 'a little hurt');
+      addMessage(pickLine(['oh. you’re alive. i was starting to think you forgot about me completely…', 'look who finally remembered i exist. got anything to say for yourself, P-chan? :/', 'you were gone for ages. i’m not saying i missed you. …okay, maybe a little.']), 'ame');
+    } else if (elapsed > 600000) {
+      state.irritation = Math.min(5, state.irritation + 1);
+      animate('irritated', 'slightly offended');
+      addMessage(pickLine(['oh, look who’s back. having fun ignoring me? >:(', 'wow. no message, no warning, nothing. rude, P-chan.', 'i was doing perfectly fine without you. …mostly.']), 'ame');
+    } else {
+      animate('ordinary_question', 'curious');
+      addMessage(pickLine(['oh, hey. you disappeared for a bit. what happened?', 'P-chan! there you are. what were you up to? :3', 'back already? good. i was getting bored.']), 'ame');
+    }
+  }
+  state.lastActiveAt = Date.now();
+  save();
+
+  img.addEventListener('click', pet);
+  document.getElementById('petBtn').addEventListener('click', pet);
+  document.getElementById('complimentBtn').addEventListener('click', () => {
+    markActivity(); state.affection = Math.min(10, state.affection + 1); state.irritation = Math.max(0, state.irritation - 1);
+    animate('compliment', 'pleased');
+    if (window.AME_PERSONALITY) window.AME_PERSONALITY.setExternalRegister('streamer');
+    addMessage('you look cute today, Ame.', 'you');
+    addMessage(pickLine(['i know. but it’s nice that you finally noticed. <3', 'pfft… whatever. keep talking, i’m listening.', 'there goes my ego. fully restored for the next three minutes.', 'obviously. did you think just anyone could sit here?']), 'ame');
+  });
+  document.getElementById('surpriseBtn').addEventListener('click', () => {
+    markActivity(); animate('surprise', 'surprised');
+    if (window.AME_PERSONALITY) window.AME_PERSONALITY.setExternalRegister('surprised');
+    addMessage('boo!', 'you'); addMessage(pickLine(['AAH?! …give my brain a second to load!', 'WHAT— p-chan, don’t do that!!', 'okay, wow. i absolutely did not see that coming.']), 'ame');
+  });
+  document.getElementById('idleBtn').addEventListener('click', () => {
+    markActivity();
+    if (window.AME_PERSONALITY) window.AME_PERSONALITY.setExternalRegister('everyday');
+    animate('idle', 'calm');
+    addMessage(pickLine(['hmm. what should i do now…', 'i could scroll for hours and still find nothing interesting. impressive, right?', 'P-chan, entertain me. i’m bored :3', 'i’m taking a tiny break. you can keep me company if you want.']), 'ame');
+  });
+  form.addEventListener('submit', async e => {
+    e.preventDefault(); const raw = input.value.trim(); if (!raw) return;
+    markActivity(); addMessage(raw, 'you'); input.value = ''; input.disabled = true; sendButton.disabled = true;
+    try {
+      const reply = await askGroq(raw);
+      const [scene, mood] = classifyReaction(raw, reply);
+      animate(scene, mood);
+      if (window.AME_PERSONALITY) {
+        if (scene === 'irritated') window.AME_PERSONALITY.setExternalRegister('irritated');
+        else if (scene === 'compliment' || scene === 'pet') window.AME_PERSONALITY.setExternalRegister('playful');
+        else window.AME_PERSONALITY.setExternalRegister('everyday');
+      }
+      addMessage(reply, 'ame');
+    } catch (err) {
+      addMessage('ugh, i can’t reach the model right now. (' + String(err.message || err).slice(0, 90) + ')', 'ame');
+    }
+    input.disabled = false; sendButton.disabled = false; input.focus();
+  });
+  if (typeof showAmeAnimation !== 'function') {
+    console.error('animation-map.js did not load. Check that it is next to index.html.');
+    img.addEventListener('click', () => { img.src = './sprites/IMG_1715.gif'; });
+  }
+  if (window.AME_PERSONALITY) window.AME_PERSONALITY.setRegister();
+  if (window.AME_PRESENCE) {
+    presence = window.AME_PRESENCE.create({
+      onMessage(text, stage) {
+        animate(stage.scene, stage.mood);
+        if (window.AME_PERSONALITY) window.AME_PERSONALITY.setExternalRegister(stage.register);
+        addMessage(text, 'ame');
+      },
+      onReturn() {
+        animate('ordinary_question', 'curious');
+        addMessage('oh, you’re back. did you miss me, P-chan? …don’t answer that. :3', 'ame');
+      }
+    });
+  }
+  scheduleIdle();
+})();
+</script>
+</body>
+</html>
