@@ -1,0 +1,6 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ame-chan-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-11"
+}
